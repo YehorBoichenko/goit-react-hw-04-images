@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from '../ModalWindow/ModalWindow.module.css';
+import PropTypes from 'prop-types';
 
 const body = document.querySelector('body');
 
@@ -32,3 +33,7 @@ export default function ModalWindow(props) {
     </div>
   );
 }
+
+ModalWindow.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
