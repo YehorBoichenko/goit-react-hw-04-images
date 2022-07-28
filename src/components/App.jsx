@@ -34,10 +34,14 @@ function App() {
       .finally(() => setLoading(false));
   }, [page, searchInput]);
 
-  const onSearch = searchInput => {
+  const onSearch = string => {
+    if (string === searchInput) {
+      return;
+    }
     setImages([]);
-    setSearchInput(searchInput);
+    setSearchInput(string);
     setPage(1);
+
     setError(null);
     setLoading(true);
   };
