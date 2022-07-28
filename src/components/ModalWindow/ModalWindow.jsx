@@ -1,39 +1,34 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import styles from '../ModalWindow/ModalWindow.module.css';
+
 const body = document.querySelector('body');
-export default class ModalWindow extends Component {
-  state = {
-    loading: false,
-  };
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleCloseModal);
+export default function ModalWindow(props) {
+  useEffect(() => {
+    const handleCloseModal = event => {
+      if (event.code === 'Escape') {
+        props.onClose();
+      }
+    };
+    window.addEventListener('keydown', handleCloseModal);
     body.classList.add('no-scroll');
-  }
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleCloseModal);
-    body.classList.remove('no-scroll');
-  }
+    return () => {
+      window.removeEventListener('keydown', handleCloseModal);
+      body.classList.remove('no-scroll');
+    };
+  });
 
-  handleCloseModal = event => {
-    if (event.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
-
-  backDropClick = event => {
+  const backDropClick = event => {
     if (event.currentTarget === event.target) {
-      this.props.onClose();
+      props.onClose();
     }
   };
-  render() {
-    const { src, alt } = this.props;
-    return (
-      <div className={styles.backdrop} onClick={this.backDropClick}>
-        <div className={styles.modalOpen}>
-          <img className={styles.modalImg} src={src} alt={alt} />
-        </div>
+
+  return (
+    <div className={styles.backdrop} onClick={backDropClick}>
+      <div className={styles.modalOpen}>
+        <img className={styles.modalImg} src={props.largeimg} alt={props.alt} />
       </div>
-    );
-  }
+    </div>
+  );
 }
